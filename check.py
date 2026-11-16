@@ -48,8 +48,8 @@ def main():
         if len(cols) >= 8:
             fmt, uni, _, _, deadline, seats, state, date = cols[:8]
 
-            # Monitors CENT@HOME seats. Change to ("CENT@HOME" in fmt or "CENT@UNI" in fmt) if you want both.
-            if "CENT@HOME" in fmt and "AVAILABLE SEATS" in state.upper():
+            # Monitors CENT@UNI seats. Change to ("CENT@UNI" in fmt or "CENT@UNI" in fmt) if you want both.
+            if "CENT@UNI" in fmt and "AVAILABLE SEATS" in state.upper():
                 slot_id = f"{fmt}|{uni}|{date}"
                 current_open.add(slot_id)
 
@@ -65,7 +65,7 @@ def main():
                     print("ALERT SENT:", slot_id)
 
     save_seen(current_open)
-    print(f"Done. Open CENT@HOME slots right now: {len(current_open)}")
+    print(f"Done. Open CENT@UNI slots right now: {len(current_open)}")
 
 if __name__ == "__main__":
     main()
