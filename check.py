@@ -31,6 +31,7 @@ def save_seen(slots):
         json.dump(list(slots), f)
 
 def main():
+    send_push("Test", "Bot is alive!")
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
     }
