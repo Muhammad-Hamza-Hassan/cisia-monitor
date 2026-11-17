@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 URL = "https://testcisia.it/calendario.php?tolc=cents&l=gb&lingua=inglese"
 NTFY_TOPIC = "Cisia_CENT-S_tracking_bot_nigga"
 STATE_FILE = "seen_slots.json"
-TARGET_FORMAT = "CENT@UNI"
+TARGET_FORMAT = "CENT@HOME"
 
 def send_push(title, message, priority="high"):
     requests.post(
