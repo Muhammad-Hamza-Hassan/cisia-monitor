@@ -4,8 +4,9 @@ import requests
 from bs4 import BeautifulSoup
 
 URL = "https://testcisia.it/calendario.php?tolc=cents&l=gb&lingua=inglese"
-NTFY_TOPIC = "Cisia_CENT-S_tracking_bot_nigga"  
+NTFY_TOPIC = "Cisia_CENT-S_tracking_bot_nigga"
 STATE_FILE = "seen_slots.json"
+TARGET_FORMAT = "CENT@UNI"
 
 def send_push(title, message, priority="high"):
     requests.post(
@@ -31,7 +32,6 @@ def save_seen(slots):
         json.dump(list(slots), f)
 
 def main():
-    send_push("Test", "Bot is alive!")
     headers = {
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
     }
@@ -49,9 +49,8 @@ def main():
         if len(cols) >= 8:
             fmt, uni, _, _, deadline, seats, state, date = cols[:8]
 
-            # Monitors CENT@HOME seats
-            if "CENT@UNI" in fmt and "AVAILABLE SEATS" in state.upper():
-                slot_id = f"{fmt}|{uni}|{date}"
+            if TARGET_FORMAT in fmt and "AVAILABLE SEATS" in state.upper():
+                slot_id = f"{fmt}|{uni}|{date}|{seats}"
                 current_open.add(slot_id)
 
                 if slot_id not in seen:
@@ -62,11 +61,11 @@ def main():
                         f"Deadline: {deadline} | Seats: {seats}\n"
                         f"Tap notification to open CISIA!"
                     )
-                    send_push("CENT@UNI SEAT OPEN!", msg, priority="urgent")
+                    send_push(f"{TARGET_FORMAT} SEAT OPEN!", msg, priority="urgent")
                     print("ALERT SENT:", slot_id)
 
     save_seen(current_open)
-    print(f"Done. Open CENT@HOME slots right now: {len(current_open)}")
+    print(f"Done. Open {TARGET_FORMAT} slots right now: {len(current_open)}")
 
 if __name__ == "__main__":
     main()
